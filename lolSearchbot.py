@@ -97,7 +97,7 @@ async def on_message(message): # on_message() event : when the bot has recieved 
                          icon_url='https://avatars2.githubusercontent.com/u/45956041?s=460&u=1caf3b112111cbd9849a2b95a88c3a8f3a15ecfa&v=4')
         await message.channel.send("도움말!", embed=embed)
 
-    if message.content.startswith("!전적"):
+    if message.content.startswith("!롤전적"):
         playerNickname = ''.join((message.content).split(' ')[1:])
         # Open URL
         checkURLBool = urlopen(opggsummonersearch + quote(playerNickname))
@@ -118,7 +118,7 @@ async def on_message(message): # on_message() event : when the bot has recieved 
         if len(message.content.split(" ")) == 1:
             embed = discord.Embed(title="소환사 이름이 입력되지 않았습니다!", description="", color=0x5CD1E5)
             embed.add_field(name="Summoner name not entered",
-                            value="To use command $lolplayerinfo : $lolplayerinfo (Summoner Nickname)", inline=False)
+                            value="To use command !롤전적 : !롤전적 (Summoner Nickname)", inline=False)
             embed.set_footer(text='Service provided by Hoplin.',
                              icon_url='https://avatars2.githubusercontent.com/u/45956041?s=460&u=1caf3b112111cbd9849a2b95a88c3a8f3a15ecfa&v=4')
             await message.channel.send("Error : Incorrect command usage ", embed=embed)
