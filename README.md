@@ -12,6 +12,20 @@ Discord Bot : League of Legend player information search bot
 
 4 . Warning  : This Application is only available for South Korea. I'm gonna make other countries' server able to use it.
 ***
+- Patch Note 20200503
+    
+    - Issue : https://github.com/J-hoplin1/League-Of-Legend-Search-Bot/issues/2
+
+    - Bug Fix : In [Base-Version](https://github.com/J-hoplin1/League-Of-Legend-Search-Bot/blob/Base-Version/lolSearchbot.py) line number 107, 108 it also get banner images. This line change like this.
+
+    ```python
+    Medal = bs.find('div', {'class': 'ContentWrap tabItems'})
+        RankMedal = Medal.findAll('img', {'src': re.compile('//[a-z]-[A-Za-z].[A-Za-z].[A-Za-z]/[A-Za-z]/[A-Za-z]/[a-z0-9_]*.png')})
+    ```
+
+    - Really thanks to [moonjy1120](https://github.com/moonjy1120) for finding this bug :D
+
+***
 
 - How to Use?
 
