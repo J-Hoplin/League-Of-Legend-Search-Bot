@@ -104,8 +104,8 @@ async def on_message(message): # on_message() event : when the bot has recieved 
         bs = BeautifulSoup(checkURLBool, 'html.parser')
 
         # 자유랭크 언랭은 뒤에 '?image=q_auto&v=1'표현이없다
-        RankMedal = bs.findAll('img', {
-            'src': re.compile('\/\/[a-z]*\-[A-Za-z]*\.[A-Za-z]*\.[A-Za-z]*\/[A-Za-z]*\/[A-Za-z]*\/[a-z0-9_]*\.png')})
+       Medal = bs.find('div', {'class': 'ContentWrap tabItems'}) 
+       RankMedal = Medal.findAll('img', {'src': re.compile('//[a-z]-[A-Za-z].[A-Za-z].[A-Za-z]/[A-Za-z]/[A-Za-z]/[a-z0-9_]*.png')})
         # index 0 : Solo Rank
         # index 1 : Flexible 5v5 rank
 
