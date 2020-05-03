@@ -23,7 +23,7 @@ Discord Bot : League of Legend player information search bot
     RankMedal = Medal.findAll('img', {'src': re.compile('//[a-z]-[A-Za-z].[A-Za-z].[A-Za-z]/[A-Za-z]/[A-Za-z]/[a-z0-9_]*.png')})
     ```
 
-    - Really thanks to [moonjy1120](https://github.com/moonjy1120) for finding this bug :D
+    - Really thanks to [moonjy1120](https://github.com/moonjy1120) finding this bug :D
 
 ***
 
