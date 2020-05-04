@@ -46,7 +46,7 @@ warnings.filterwarnings(action='ignore')
 bot = commands.Bot(command_prefix='!')
 
 opggsummonersearch = 'https://www.op.gg/summoner/userName='
-bottoken = 'NzA2NzUxMDA1OTkxMzcwNzYy.Xq-0nw.DxR0PyBKk9a_08VyO5p3NDNPxfU'
+bottoken = ''
 
 '''
 asyncio : Asynchronous I/O. It is a module for asynchronous programming and allows CPU operations to be handled in parallel with I/O.
