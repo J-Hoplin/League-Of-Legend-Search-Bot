@@ -31,7 +31,7 @@ Discord Bot : League of Legend player information search bot
 
     - Main Content : Algorithm Change. Now it's little bit more faster than before
 
-    - Bug Fix : In patch Note 20200503 I change code like this.
+    - Bug Fix : In patch Note 20200503 I change code like this in consideration of maintenance.
 
     ```python
     Medal = bs.find('div', {'class': 'ContentWrap tabItems'})
