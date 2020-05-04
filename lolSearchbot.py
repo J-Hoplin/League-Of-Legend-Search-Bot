@@ -71,8 +71,6 @@ def deleteTags(htmls):
         htmls[a] = re.sub('<.+?>','',str(htmls[a]),0).strip()
     return htmls
 
-bottoken = ''
-
 @client.event # Use these decorator to register an event.
 async def on_ready(): # on_ready() event : when the bot has finised logging in and setting things up
     await client.change_presence(status=discord.Status.online, activity=discord.Game("Type !help or !도움말 for help"))
