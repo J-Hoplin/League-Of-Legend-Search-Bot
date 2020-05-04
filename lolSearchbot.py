@@ -49,6 +49,7 @@ opggsummonersearch = 'https://www.op.gg/summoner/userName='
 bottoken = ''
 
 '''
+Simple Introduction about asyncio
 asyncio : Asynchronous I/O. It is a module for asynchronous programming and allows CPU operations to be handled in parallel with I/O.
 async def (func name)(parameters): -> This type of asynchronous function or method is called Native Co-Rutine.
 - await : you can use await keyword only in Native Co-Rutine
