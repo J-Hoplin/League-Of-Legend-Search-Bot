@@ -46,7 +46,7 @@ warnings.filterwarnings(action='ignore')
 bot = commands.Bot(command_prefix='!')
 
 opggsummonersearch = 'https://www.op.gg/summoner/userName='
-bottoken = ''
+bottoken = 'NzA2NzUxMDA1OTkxMzcwNzYy.Xq-0nw.DxR0PyBKk9a_08VyO5p3NDNPxfU'
 
 '''
 asyncio : Asynchronous I/O. It is a module for asynchronous programming and allows CPU operations to be handled in parallel with I/O.
@@ -96,39 +96,37 @@ async def on_message(message): # on_message() event : when the bot has recieved 
         await message.channel.send("도움말!", embed=embed)
 
     if message.content.startswith("!롤전적"):
-        playerNickname = ''.join((message.content).split(' ')[1:])
-        # Open URL
-        checkURLBool = urlopen(opggsummonersearch + quote(playerNickname))
-        bs = BeautifulSoup(checkURLBool, 'html.parser')
+        try:
+            if len(message.content.split(" ")) == 1:
+                embed = discord.Embed(title="소환사 이름이 입력되지 않았습니다!", description="", color=0x5CD1E5)
+                embed.add_field(name="Summoner name not entered",
+                                value="To use command !롤전적 : !롤전적 (Summoner Nickname)", inline=False)
+                embed.set_footer(text='Service provided by Hoplin.',
+                                 icon_url='https://avatars2.githubusercontent.com/u/45956041?s=460&u=1caf3b112111cbd9849a2b95a88c3a8f3a15ecfa&v=4')
+                await message.channel.send("Error : Incorrect command usage ", embed=embed)
+            else:
+                playerNickname = ''.join((message.content).split(' ')[1:])
+                # Open URL
+                checkURLBool = urlopen(opggsummonersearch + quote(playerNickname))
+                bs = BeautifulSoup(checkURLBool, 'html.parser')
 
-        # 자유랭크 언랭은 뒤에 '?image=q_auto&v=1'표현이없다
-        Medal = bs.find('div', {'class': 'ContentWrap tabItems'}) 
-        RankMedal = Medal.findAll('img', {'src': re.compile('//[a-z]-[A-Za-z].[A-Za-z].[A-Za-z]/[A-Za-z]/[A-Za-z]/[a-z0-9_]*.png')})
-        # index 0 : Solo Rank
-        # index 1 : Flexible 5v5 rank
+                # 자유랭크 언랭은 뒤에 '?image=q_auto&v=1'표현이없다
 
-        # for mostUsedChampion
-        mostUsedChampion = bs.find('div', {'class': 'ChampionName'})
-        mostUsedChampionKDA = bs.find('span', {'class': 'KDA'})
+                # Patch Note 20200503에서
+                # Medal = bs.find('div', {'class': 'ContentWrap tabItems'}) 이렇게 바꾸었었습니다.
+                # PC의 설정된 환경 혹은 OS플랫폼에 따라서 ContentWrap tabItems의 띄어쓰기가 인식이
 
-        # 솔랭, 자랭 둘다 배치가 안되어있는경우 -> 사용된 챔피언 자체가 없다. 즉 모스트 챔피언 메뉴를 넣을 필요가 없다.
+                Medal = bs.find('div', {'class': 'SideContent'})
+                RankMedal = Medal.findAll('img', {'src': re.compile('\/\/[a-z]*\-[A-Za-z]*\.[A-Za-z]*\.[A-Za-z]*\/[A-Za-z]*\/[A-Za-z]*\/[a-z0-9_]*\.png')})
+                # Variable RankMedal's index 0 : Solo Rank
+                # Variable RankMedal's index 1 : Flexible 5v5 rank
 
-        if len(message.content.split(" ")) == 1:
-            embed = discord.Embed(title="소환사 이름이 입력되지 않았습니다!", description="", color=0x5CD1E5)
-            embed.add_field(name="Summoner name not entered",
-                            value="To use command !롤전적 : !롤전적 (Summoner Nickname)", inline=False)
-            embed.set_footer(text='Service provided by Hoplin.',
-                             icon_url='https://avatars2.githubusercontent.com/u/45956041?s=460&u=1caf3b112111cbd9849a2b95a88c3a8f3a15ecfa&v=4')
-            await message.channel.send("Error : Incorrect command usage ", embed=embed)
+                # for mostUsedChampion
+                mostUsedChampion = bs.find('div', {'class': 'ChampionName'})
+                mostUsedChampionKDA = bs.find('span', {'class': 'KDA'})
 
-        elif len(deleteTags(bs.findAll('h2', {'class': 'Title'}))) != 0:
-            embed = discord.Embed(title="존재하지 않는 소환사", description="", color=0x5CD1E5)
-            embed.add_field(name="해당 닉네임의 소환사가 존재하지 않습니다.", value="소환사 이름을 확인해주세요", inline=False)
-            embed.set_footer(text='Service provided by Hoplin.',
-                             icon_url='https://avatars2.githubusercontent.com/u/45956041?s=460&u=1caf3b112111cbd9849a2b95a88c3a8f3a15ecfa&v=4')
-            await message.channel.send("Error : Non existing Summoner ", embed=embed)
-        else:
-            try:
+                # 솔랭, 자랭 둘다 배치가 안되어있는경우 -> 사용된 챔피언 자체가 없다. 즉 모스트 챔피언 메뉴를 넣을 필요가 없다.
+
                 # Scrape Summoner's Rank information
                 # [Solorank,Solorank Tier]
                 solorank_Types_and_Tier_Info = deleteTags(bs.findAll('div', {'class': {'RankType', 'TierRank'}}))
@@ -253,13 +251,23 @@ async def on_message(message): # on_message() event : when the bot has recieved 
                     embed.set_footer(text='Service provided by Hoplin.',
                                      icon_url='https://avatars2.githubusercontent.com/u/45956041?s=460&u=1caf3b112111cbd9849a2b95a88c3a8f3a15ecfa&v=4')
                     await message.channel.send("소환사 " + playerNickname + "님의 전적", embed=embed)
-            except HTTPError as e:
-                embed = discord.Embed(title="소환사 전적검색 실패", description="", color=0x5CD1E5)
-                embed.add_field(name="", value="올바르지 않은 소환사 이름입니다. 다시 확인해주세요!", inline=False)
-                await message.channel.send("Wrong Summoner Nickname")
+        except HTTPError as e:
+            embed = discord.Embed(title="소환사 전적검색 실패", description="", color=0x5CD1E5)
+            embed.add_field(name="", value="올바르지 않은 소환사 이름입니다. 다시 확인해주세요!", inline=False)
+            await message.channel.send("Wrong Summoner Nickname")
 
-            except UnicodeEncodeError as e:
-                embed = discord.Embed(title="소환사 전적검색 실패", description="", color=0x5CD1E5)
-                embed.add_field(name="???", value="올바르지 않은 소환사 이름입니다. 다시 확인해주세요!", inline=False)
-                await message.channel.send("Wrong Summoner Nickname", embed=embed)
+        except UnicodeEncodeError as e:
+            embed = discord.Embed(title="소환사 전적검색 실패", description="", color=0x5CD1E5)
+            embed.add_field(name="???", value="올바르지 않은 소환사 이름입니다. 다시 확인해주세요!", inline=False)
+            await message.channel.send("Wrong Summoner Nickname", embed=embed)
+
+        except AttributeError as e:
+            embed = discord.Embed(title="존재하지 않는 소환사", description="", color=0x5CD1E5)
+            embed.add_field(name="해당 닉네임의 소환사가 존재하지 않습니다.", value="소환사 이름을 확인해주세요", inline=False)
+            embed.set_footer(text='Service provided by Hoplin.',
+                             icon_url='https://avatars2.githubusercontent.com/u/45956041?s=460&u=1caf3b112111cbd9849a2b95a88c3a8f3a15ecfa&v=4')
+            await message.channel.send("Error : Non existing Summoner ", embed=embed)
+
+
+
 client.run(bottoken)
