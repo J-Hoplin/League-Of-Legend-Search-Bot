@@ -150,13 +150,10 @@ async def on_message(message): # on_message() event : when the bot has recieved 
                         await message.channel.send("소환사 \"" + playerNickname + "\" 님의 전적", embed=embed)
                         
         except BaseException as e:
-            print(e)
-            '''
-            embed = discord.Embed(title="존재하지 않는 소환사", description="", color=0x5CD1E5)
-            embed.add_field(name="해당 닉네임의 소환사가 존재하지 않습니다.", value="소환사 이름을 확인해주세요", inline=False)
+            embed = discord.Embed(title="봇 로직 내 버그발생!", description="", color=0x5CD1E5)
+            embed.add_field(name="봇 로직에서 버그를 발견하였습니다!.", value="서버 운영자 혹은 개발자(jhoplin7259@gmail.com)으로 연락주세요!", inline=False)
             embed.set_footer(text='Service provided by Hoplin.',
                              icon_url='https://avatars2.githubusercontent.com/u/45956041?s=460&u=1caf3b112111cbd9849a2b95a88c3a8f3a15ecfa&v=4')
-            await message.channel.send("존재하지않는 소환사입니다!", embed=embed)
-            '''
+            await message.channel.send("Discord Bot Logic Error", embed=embed)
 
 client.run(bottoken)
