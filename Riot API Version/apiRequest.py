@@ -110,7 +110,3 @@ class riotAPIRequest(object):
             return summary
         except KeyError as e: #For not-Existing ID
             return  False
-
-if __name__=="__main__":
-    a = riotAPIRequest()
-    print(a.getPersonalChampionMasteries('앙 너 암살띠'))
