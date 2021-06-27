@@ -6,6 +6,9 @@ KR Riot API End Point
 quote() : url to encode
 '''
 
+# encid : 5ClrZV6I5PMUl6byGJ7MVejLfW2YfGxylkY999B6q1zbf4w
+# puuid : Fy50ddrXuPpwZMInrRrZPsT2tCAHlQFrI5G9NI_-Lu9R91L4i7S09sbB0tquRcr-ST3u3NJdEJCi9A
+
 import requests
 import json
 from urllib.parse import quote
@@ -20,12 +23,7 @@ mapRankName = {
 }
 
 class riotAPIRequest(object):
-<<<<<<< HEAD
     def __init__(self, riotapikey) -> None:
-=======
-    apiKey = ""
-    def __init__(self) -> None:
->>>>>>> bb395d9c2a8c91e13cdc8d8ceb1c0999e095ef7d
         self.KRRegionAPIEndPoint='https://kr.api.riotgames.com'
         self.puuidEnd = "/lol/summoner/v4/summoners/by-name/"# /lol/summoner/v4/summoners/by-name/{summonerName}
         self.personalInfoEnd = "/lol/league/v4/entries/by-summoner/"  #/lol/league/v4/entries/by-summoner/{encryptedSummonerId}
