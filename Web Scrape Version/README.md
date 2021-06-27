@@ -9,7 +9,7 @@ Discord Bot : League of Legend player information search bot
 
 3 . What for? : To make able to see summoner's information URL, Rank Info, Most Champion with using command
 
-4 . Warning  : This Application is only available for South Korea. I'm gonna make other countries' server able to use it.
+4 . Warning  : This Application is only available for South Korea. 
 ***
 - Patch Note 20200503
     
