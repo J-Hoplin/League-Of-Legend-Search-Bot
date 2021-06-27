@@ -23,8 +23,7 @@ mapRankName = {
 }
 
 class riotAPIRequest(object):
-    apiKey = "RGAPI-2ca26509-17ab-4ff9-9224-1332d0df40b0"
-    def __init__(self) -> None:
+    def __init__(self, riotapikey) -> None:
         self.KRRegionAPIEndPoint='https://kr.api.riotgames.com'
         self.puuidEnd = "/lol/summoner/v4/summoners/by-name/"# /lol/summoner/v4/summoners/by-name/{summonerName}
         self.personalInfoEnd = "/lol/league/v4/entries/by-summoner/"  #/lol/league/v4/entries/by-summoner/{encryptedSummonerId}
@@ -32,7 +31,7 @@ class riotAPIRequest(object):
         self.req_header = {
             "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.96 Safari/537.36",
             "Accept-Language": "ko-KR",
-            "X-Riot-Token": riotAPIRequest.apiKey
+            "X-Riot-Token": riotapikey
         }
     
     def get_puuid_and_encryptedID(self,name) -> bool:
