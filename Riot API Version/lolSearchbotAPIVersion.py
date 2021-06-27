@@ -12,13 +12,19 @@ import discord
 import asyncio
 import os
 import json
+import yaml
 from discord.ext import commands
 from apiRequest import riotAPIRequest
 import re # Regex for youtube link
 import warnings
 
-bottoken = ''
-riotapiKey = ""
+
+with open('config.yml') as f:
+    keys = yaml.load(f, Loader=yaml.FullLoader)
+
+
+bottoken = keys['Keys']['discordAPIToken']
+riotapiKey = keys['Keys']['riotAPIToken']
 
 client = discord.Client() # Create Instance of Client. This Client is discord server's connection to Discord Room
 apiCall = riotAPIRequest(riotapiKey)
