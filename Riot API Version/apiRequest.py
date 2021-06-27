@@ -63,7 +63,30 @@ class riotAPIRequest(object):
     def getPersonalChampionMasteries(self,name) -> bool:        
         try:
             keybox = self.get_puuid_and_encryptedID(name)
-            return requests.get(self.KRRegionAPIEndPoint + self.personalChampionMastery + keybox['encid'], headers=self.req_header).json()[0]
+            mastery = requests.get(self.KRRegionAPIEndPoint + self.personalChampionMastery + keybox['encid'], headers=self.req_header).json()
+            reprocessmastery = dict()
+            if len(mastery) > 3:
+                mastery = mastery[0:3]
+                for i in mastery:
+                    chid = i['championId']
+                    chlv = i['championLevel']
+                    chpoint = i['championPoints']
+                    reprocessmastery[champInfo[str(chid)]["name"]] = {
+                        'championlevel' : chlv,
+                        'championpoint' : chpoint,
+                        'championImage' : champInfo[str(chid)]["image"]
+                    }
+            else:
+                for i in mastery:
+                    chid = i['championId']
+                    chlv = i['championLevel']
+                    chpoint = i['championPoints']
+                    reprocessmastery[champInfo[str(chid)]["name"]] = {
+                        'championlevel' : chlv,
+                        'championpoint' : chpoint,
+                        'championImage' : champInfo[str(chid)]["image"]
+                    }
+            return reprocessmastery
         except KeyError as e: #For not-Existing ID
             return  False
         
@@ -88,3 +111,7 @@ class riotAPIRequest(object):
             return summary
         except KeyError as e: #For not-Existing ID
             return  False
+
+if __name__=="__main__":
+    a = riotAPIRequest()
+    print(a.getPersonalChampionMasteries('앙 너 암살띠'))

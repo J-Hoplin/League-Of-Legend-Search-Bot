@@ -116,6 +116,7 @@ async def on_message(message): # on_message() event : when the bot has recieved 
                         embed.add_field(name="Data Source", value="Data by Official Riot API : https://developer.riotgames.com/",inline=False)
                         embed.add_field(name=f"Ranked Solo : {record['Personal/Duo Rank']['tier']} {record['Personal/Duo Rank']['rank']}", value=f"{record['Personal/Duo Rank']['leaguepoint']} LP / {record['Personal/Duo Rank']['win']}W {record['Personal/Duo Rank']['loss']}L / Win Ratio {solowinRatio}%", inline=False)
                         embed.add_field(name=f"Flex 5:5 Rank : {record['Flex 5:5 Rank']['tier']} {record['Flex 5:5 Rank']['rank']}", value=f"{record['Flex 5:5 Rank']['leaguepoint']} LP / {record['Flex 5:5 Rank']['win']}W {record['Flex 5:5 Rank']['loss']}L / Win Ratio {flexwinRatio}%", inline=False)
+                        embed.add_field(name=f"Most Used Champion : {mastery['championname']}",value=f"Proficiency Level : {mastery['championlevel']}.Lv / Champion Point : {mastery['championpoint']}pt")
                         embed.set_thumbnail(url=f"https://github.com/J-hoplin1/League-Of-Legend-Search-Bot/blob/master/Riot%20API%20Version/ranked-emblems/Emblem_{thumbnail}.png?raw=true")
                         embed.set_footer(text='Service provided by Hoplin.',icon_url='https://avatars2.githubusercontent.com/u/45956041?s=460&u=1caf3b112111cbd9849a2b95a88c3a8f3a15ecfa&v=4')
                         await message.channel.send("소환사 \"" + playerNickname + "\" 님의 전적", embed=embed)
@@ -135,6 +136,7 @@ async def on_message(message): # on_message() event : when the bot has recieved 
                         embed.add_field(name="Data Source", value="Data by Official Riot API : https://developer.riotgames.com/",inline=False)
                         embed.add_field(name="Ranked Solo : Unranked", value="Unranked", inline=False)
                         embed.add_field(name=f"Flex 5:5 Rank : {record['Flex 5:5 Rank']['tier']} {record['Flex 5:5 Rank']['rank']}", value=f"{record['Flex 5:5 Rank']['leaguepoint']} LP / {record['Flex 5:5 Rank']['win']}W {record['Flex 5:5 Rank']['loss']}L / Win Ratio {flexwinRatio}%", inline=False)
+                        embed.add_field(name=f"Most Used Champion : {mastery['championname']}",value=f"Proficiency Level : {mastery['championlevel']}.Lv / Champion Point : {mastery['championpoint']}pt")
                         embed.set_thumbnail(url=f"https://github.com/J-hoplin1/League-Of-Legend-Search-Bot/blob/master/Riot%20API%20Version/ranked-emblems/Emblem_{record['Flex 5:5 Rank']['tier']}.png?raw=true")
                         embed.set_footer(text='Service provided by Hoplin.',icon_url='https://avatars2.githubusercontent.com/u/45956041?s=460&u=1caf3b112111cbd9849a2b95a88c3a8f3a15ecfa&v=4')
                         await message.channel.send("소환사 \"" + playerNickname + "\" 님의 전적", embed=embed)
@@ -145,6 +147,7 @@ async def on_message(message): # on_message() event : when the bot has recieved 
                         embed.add_field(name="Data Source", value="Data by Official Riot API : https://developer.riotgames.com/",inline=False)
                         embed.add_field(name=f"Ranked Solo : {record['Personal/Duo Rank']['tier']} {record['Personal/Duo Rank']['rank']}", value=f"{record['Personal/Duo Rank']['leaguepoint']} LP / {record['Personal/Duo Rank']['win']}W {record['Personal/Duo Rank']['loss']}L / Win Ratio {solowinRatio}%", inline=False)
                         embed.add_field(name="Flex 5:5 Rank : Unranked", value="Unranked", inline=False)
+                        embed.add_field(name=f"Most Used Champion : {mastery['championname']}",value=f"Proficiency Level : {mastery['championlevel']}.Lv / Champion Point : {mastery['championpoint']}pt")
                         embed.set_thumbnail(url=f"https://github.com/J-hoplin1/League-Of-Legend-Search-Bot/blob/master/Riot%20API%20Version/ranked-emblems/Emblem_{record['Personal/Duo Rank']['tier']}.png?raw=true")
                         embed.set_footer(text='Service provided by Hoplin.',icon_url='https://avatars2.githubusercontent.com/u/45956041?s=460&u=1caf3b112111cbd9849a2b95a88c3a8f3a15ecfa&v=4')
                         await message.channel.send("소환사 \"" + playerNickname + "\" 님의 전적", embed=embed)
@@ -155,5 +158,46 @@ async def on_message(message): # on_message() event : when the bot has recieved 
             embed.set_footer(text='Service provided by Hoplin.',
                              icon_url='https://avatars2.githubusercontent.com/u/45956041?s=460&u=1caf3b112111cbd9849a2b95a88c3a8f3a15ecfa&v=4')
             await message.channel.send("Discord Bot Logic Error", embed=embed)
-
+            
+    if message.content.startswith("!롤모스트"):
+        try:
+            if len(message.content.split(" ")) == 1:
+                embed = discord.Embed(title="소환사 이름이 입력되지 않았습니다!", description="", color=0x5CD1E5)
+                embed.add_field(name="Summoner name not entered",
+                                value="To use command !롤전적 : !롤전적 (Summoner Nickname)", inline=False)
+                embed.set_footer(text='Service provided by Hoplin.',
+                                 icon_url='https://avatars2.githubusercontent.com/u/45956041?s=460&u=1caf3b112111cbd9849a2b95a88c3a8f3a15ecfa&v=4')
+                await message.channel.send("소환사 이름이 입력되지않았습니다!", embed=embed)
+            else:
+                playerNickname = ' '.join((message.content).split(' ')[1:])
+                getMasteryBox = apiCall.getPersonalChampionMasteries(playerNickname)
+                keys = list(getMasteryBox.keys())
+                if not getMasteryBox:
+                    embed = discord.Embed(title="존재하지 않는 소환사", description="", color=0x5CD1E5)
+                    embed.add_field(name="해당 닉네임의 소환사가 존재하지 않습니다.", value="소환사 이름을 확인해주세요", inline=False)
+                    embed.set_footer(text='Service provided by Hoplin.',icon_url='https://avatars2.githubusercontent.com/u/45956041?s=460&u=1caf3b112111cbd9849a2b95a88c3a8f3a15ecfa&v=4')
+                    await message.channel.send("존재하지않는 소환사입니다!", embed=embed)
+                else:
+                    embed = discord.Embed(title=f"소환사 \"{playerNickname}\" 님의 Most Top 3", description="", color=0x5CD1E5)
+                    embed.add_field(name="Data Source", value="Data by Official Riot API : https://developer.riotgames.com/",inline=False)
+                    count = 1
+                    thumbnail = 'lorem ipsum'
+                    for i in getMasteryBox:
+                        key = keys[count - 1]
+                        p = getMasteryBox[key]
+                        embed.add_field(name=f"Most{count} : {key}", value=f"Proficiency Level : {p['championlevel']}.Lv / Champion Point : {p['championpoint']}pt",inline=False)
+                        if count == 1:
+                            thumbnail = p['championImage']
+                        else:
+                            pass
+                        count += 1
+                    embed.set_thumbnail(url=f"http://ddragon.leagueoflegends.com/cdn/11.13.1/img/champion/{thumbnail}")
+                    embed.set_footer(text='Service provided by Hoplin.',icon_url='https://avatars2.githubusercontent.com/u/45956041?s=460&u=1caf3b112111cbd9849a2b95a88c3a8f3a15ecfa&v=4')
+                    await message.channel.send("소환사 \"" + playerNickname + "\" 님의 Most Top3", embed=embed)
+        except BaseException as e:
+            embed = discord.Embed(title="봇 로직 내 버그발생!", description="", color=0x5CD1E5)
+            embed.add_field(name="봇 로직에서 버그를 발견하였습니다!.", value="서버 운영자 혹은 개발자(jhoplin7259@gmail.com)으로 연락주세요!", inline=False)
+            embed.set_footer(text='Service provided by Hoplin.',
+                             icon_url='https://avatars2.githubusercontent.com/u/45956041?s=460&u=1caf3b112111cbd9849a2b95a88c3a8f3a15ecfa&v=4')
+            await message.channel.send("Discord Bot Logic Error", embed=embed)
 client.run(bottoken)
