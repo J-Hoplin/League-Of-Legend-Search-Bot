@@ -48,7 +48,7 @@ def tierCompare(solorank,flexrank):
 warnings.filterwarnings(action='ignore')
 bot = commands.Bot(command_prefix='!')
 
-bottoken = 'NzI1MzQzNjQ3NjM3MTc2MzUw.XvNW6Q.kpE77EXQ9wPGDWDj0btAT8GOPPk'
+bottoken = ''
 
 
 
