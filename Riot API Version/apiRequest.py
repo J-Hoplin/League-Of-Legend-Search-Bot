@@ -13,6 +13,7 @@ import requests
 import json
 from urllib.parse import quote
 from typing import MutableSequence, Any
+from reProcessChampion import reProcessChampionLists
 
 with open('championInfo.json') as f:
     champInfo = json.load(f)
@@ -34,15 +35,27 @@ class riotAPIRequest(object):
             "X-Riot-Token": riotapikey
         }
     
+    def reOpenJSON(self):
+        with open('championInfo.json') as f:
+            champInfo = json.load(f)
+    
+    def update_CInfo(self):
+        if requests.get('https://ddragon.leagueoflegends.com/api/versions.json').json()[0] != champInfo["Version"]:
+            reProcessChampionLists()
+            self.reOpenJSON()
+        else:
+            pass
+    
     def get_puuid_and_encryptedID(self,name) -> bool:
         getResponseJSON = requests.get(self.KRRegionAPIEndPoint + self.puuidEnd + quote(name),headers=self.req_header).json()
         summonerKeyBox = {
             'encid' : getResponseJSON['id'],
             'puuid' : getResponseJSON['puuid']
         }
-        return  summonerKeyBox
+        return summonerKeyBox
         
-    def getPersonalChampionMastery(self,name) -> bool:  
+    def getPersonalChampionMastery(self,name) -> bool:
+        self.update_CInfo()
         try:
             keybox = self.get_puuid_and_encryptedID(name)
             mastery = requests.get(self.KRRegionAPIEndPoint + self.personalChampionMastery + keybox['encid'], headers=self.req_header).json()[0]
@@ -59,7 +72,8 @@ class riotAPIRequest(object):
         except KeyError as e: #For not-Existing ID
             return  False
     
-    def getPersonalChampionMasteries(self,name) -> bool:        
+    def getPersonalChampionMasteries(self,name) -> bool:
+        self.update_CInfo()
         try:
             keybox = self.get_puuid_and_encryptedID(name)
             mastery = requests.get(self.KRRegionAPIEndPoint + self.personalChampionMastery + keybox['encid'], headers=self.req_header).json()
@@ -90,6 +104,7 @@ class riotAPIRequest(object):
             return  False
         
     def getPersonalGameRecord(self,name) -> bool:
+        self.update_CInfo()
         try:
             keybox = self.get_puuid_and_encryptedID(name)
             getMastery = self.getPersonalChampionMastery(name)
