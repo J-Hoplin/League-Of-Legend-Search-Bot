@@ -13,14 +13,10 @@ import warnings
 with open('config.yml') as f:
     keys = yaml.load(f, Loader=yaml.FullLoader)
 
-
+####################################################
 bottoken = keys['Keys']['discordAPIToken']
 riotapiKey = keys['Keys']['riotAPIToken']
-
-client = discord.Client() # Create Instance of Client. This Client is discord server's connection to Discord Room
 apiCall = riotAPIRequest(riotapiKey)
-
-
 # for lolplayersearch
 tierScore = {
     'default' : 0,
@@ -45,6 +41,10 @@ def tierCompare(solorank,flexrank):
     # same
     else:
         return 2
+
+####################################################
+
+client = discord.Client() # Create Instance of Client. This Client is discord server's connection to Discord Room
 warnings.filterwarnings(action='ignore')
 bot = commands.Bot(command_prefix='!')
 
